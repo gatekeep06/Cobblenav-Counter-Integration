@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "cobblenav_counter_integration",
+  "version": "${version}",
+  "name": "Cobblenav Counter Integration",
+  "description": "Integration of Cobblemon Counter mod into Cobblenav",
+  "authors": [
+    "gatekeep"
+  ],
+  "contact": {
+    "website": "https://modrinth.com/mod/cobblenav-counter-integration",
+    "repo": "https://github.com/gatekeep06/Cobblenav Counter Integration"
+  },
+  "license": "MIT",
+  "icon": "assets/cobblenav_counter_integration/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.metacontent.cobblenav_counter_integration.client.CobblenavCounterIntegrationClient"
+    ],
+    "main": [
+      "com.metacontent.cobblenav_counter_integration.CobblenavCounterIntegration"
+    ]
+  },
+  "mixins": [
+    "cobblenav_counter_integration.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.3",
+    "fabric": "*",
+    "minecraft": "1.20.1"
+  }
+}
