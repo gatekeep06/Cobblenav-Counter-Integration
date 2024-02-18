@@ -7,8 +7,10 @@ import com.metacontent.cobblenav_counter_integration.CobblenavCounterIntegration
 import com.metacontent.cobblenav_counter_integration.config.CounterIntegrationConfig;
 import kotlin.Pair;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import us.timinc.mc.cobblemon.counter.api.CaptureApi;
 
 import static com.cobblemon.mod.common.api.gui.GuiUtilsKt.blitk;
+import static com.cobblemon.mod.common.client.render.RenderHelperKt.drawScaledText;
 
 @Mixin(FinderScreen.class)
 public class PokenavFinderScreenMixin {
@@ -68,5 +71,24 @@ public class PokenavFinderScreenMixin {
                 116, 210, 0, offsetY, 256, textureHeight,
                 0, 1, 1, 1, 1, false, 1);
         ci.cancel();
+    }
+
+    @Inject(method = "renderLevel", at = @At("HEAD"))
+    protected void injectRenderLevelMethod(DrawContext drawContext, int i, int j, CallbackInfo ci) {
+        PlayerEntity player = MinecraftClient.getInstance().player;
+
+        if (player != null) {
+            Pair<String, Integer> streak = CaptureApi.INSTANCE.getStreak(player);
+            int value = streak.component2();
+            if (streak.component1().equals(pokemon.getSpecies().showdownId())) {
+                blitk(drawContext.getMatrices(), ASSETS,
+                        borderX + AbstractPokenavItemScreen.BORDER_DEPTH, borderY + AbstractPokenavItemScreen.BORDER_HEIGHT / 2,
+                        14, 41, 0, 465, 256, 512,
+                        0, 1, 1, 1, 1, false, 1);
+                drawScaledText(drawContext, AbstractPokenavItemScreen.FONT, Text.literal("CS: " + value),
+                        borderX + AbstractPokenavItemScreen.BORDER_DEPTH + 8, borderY + AbstractPokenavItemScreen.BORDER_HEIGHT / 2 + 2,
+                        1, 1, 30, 0xFFFFFF, false, true, i, j);
+            }
+        }
     }
 }

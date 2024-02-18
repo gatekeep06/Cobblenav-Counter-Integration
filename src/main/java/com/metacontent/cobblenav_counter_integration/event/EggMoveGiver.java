@@ -12,7 +12,6 @@ import kotlin.Pair;
 import kotlin.Unit;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.random.Random;
 import us.timinc.mc.cobblemon.counter.api.CaptureApi;
 
@@ -29,7 +28,6 @@ public class EggMoveGiver {
             Pair<String, Integer> streak = CaptureApi.INSTANCE.getStreak(player);
             if (streak.component1().equals(pokemonName)) {
                 int chance = getChance(streak);
-                player.sendMessage(Text.literal("" + chance));
                 Random random = player.getWorld().getRandom();
                 int randomInt = random.nextBetween(1, 100);
                 if (randomInt <= chance) {
